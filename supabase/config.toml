@@ -1,0 +1,19 @@
+project_id = "breathewise-ai"
+
+[api]
+port = 54321
+schemas = ["public", "auth"]
+
+[db]
+port = 54322
+shadow_port = 54320
+
+[edge_runtime]
+port = 54323
+policy = "per_worker"
+
+[auth]
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://breathewise.ai"]
+jwt_expiry = 3600
+enable_signup = true
