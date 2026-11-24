@@ -202,7 +202,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onCheckMyArea, onExplo
       </section>
 
       {/* Footer */}
-      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 border-t border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer role="contentinfo" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 border-t border-slate-800 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <span className="font-bold text-slate-300">BreatheWise AI</span> — Urban Air Quality Assistant. Built for PromptWars Challenge 6.
         </div>

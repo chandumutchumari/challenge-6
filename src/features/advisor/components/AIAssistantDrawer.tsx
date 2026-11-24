@@ -83,7 +83,13 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden bg-navy-950/80 backdrop-blur-sm flex justify-end">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="assistant-dialog-title"
+      onKeyDown={(e) => e.key === 'Escape' && onClose()}
+      className="fixed inset-0 z-50 overflow-hidden bg-navy-950/80 backdrop-blur-sm flex justify-end"
+    >
       <div className="w-full max-w-lg bg-navy-900 border-l border-slate-700 shadow-2xl flex flex-col h-full animate-in slide-in-from-right duration-200">
         {/* Top Header */}
         <div className="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-navy-950">
@@ -93,7 +99,7 @@ export const AIAssistantDrawer: React.FC<AIAssistantDrawerProps> = ({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-bold text-sm text-white">BreatheWise Assistant</h2>
+                <h2 id="assistant-dialog-title" className="font-bold text-sm text-white">BreatheWise Assistant</h2>
                 <span
                   className={`px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase ${
                     isGeminiLive

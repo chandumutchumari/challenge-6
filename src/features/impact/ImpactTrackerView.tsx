@@ -8,10 +8,27 @@ import {
 } from 'lucide-react';
 
 export const ImpactTrackerView: React.FC = () => {
+  type BaselineMode = 'car_gasoline' | 'car_hybrid' | 'car_ev';
+  type AlternativeMode = 'walk' | 'bike' | 'transit_bus' | 'transit_rail';
+
   const [distance, setDistance] = useState<number>(10);
   const [unit, setUnit] = useState<'km' | 'mi'>('km');
-  const [baselineMode, setBaselineMode] = useState<'car_gasoline' | 'car_hybrid' | 'car_ev'>('car_gasoline');
-  const [alternativeMode, setAlternativeMode] = useState<'walk' | 'bike' | 'transit_bus' | 'transit_rail'>('transit_bus');
+  const [baselineMode, setBaselineMode] = useState<BaselineMode>('car_gasoline');
+  const [alternativeMode, setAlternativeMode] = useState<AlternativeMode>('transit_bus');
+
+  const handleBaselineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (val === 'car_gasoline' || val === 'car_hybrid' || val === 'car_ev') {
+      setBaselineMode(val);
+    }
+  };
+
+  const handleAlternativeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value;
+    if (val === 'walk' || val === 'bike' || val === 'transit_bus' || val === 'transit_rail') {
+      setAlternativeMode(val);
+    }
+  };
 
   const result = calculateTransportImpact({
     distance_value: distance,
@@ -93,7 +110,7 @@ export const ImpactTrackerView: React.FC = () => {
             <label className="text-xs font-semibold text-slate-300 block">Current Baseline Mode</label>
             <select
               value={baselineMode}
-              onChange={(e) => setBaselineMode(e.target.value as any)}
+              onChange={handleBaselineChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="car_gasoline">Passenger Car (Gasoline, single occupant)</option>
@@ -110,7 +127,7 @@ export const ImpactTrackerView: React.FC = () => {
             <label className="text-xs font-semibold text-slate-300 block">Alternative Green Mode</label>
             <select
               value={alternativeMode}
-              onChange={(e) => setAlternativeMode(e.target.value as any)}
+              onChange={handleAlternativeChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="transit_bus">Urban Transit Bus (average occupancy)</option>

@@ -164,6 +164,14 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-navy-950 text-slate-100 flex flex-col font-sans">
+      {/* Accessible Skip Link (WCAG 2.2 AA) */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-400 focus:text-navy-950 focus:font-bold focus:rounded-lg focus:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white transition-all"
+      >
+        Skip to main content
+      </a>
+
       {/* Top Navigation */}
       <Navbar
         currentTab={currentTab}
@@ -177,7 +185,12 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <main
+        id="main-content"
+        role="main"
+        tabIndex={-1}
+        className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 focus:outline-none"
+      >
         {currentTab === 'landing' && (
           <LandingPage
             onCheckMyArea={() => setCurrentTab('dashboard')}

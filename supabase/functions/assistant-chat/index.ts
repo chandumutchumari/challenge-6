@@ -42,8 +42,9 @@ serve(async (req: Request) => {
       status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-  } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message || "Chat service error" }), {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Chat service error";
+    return new Response(JSON.stringify({ error: message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

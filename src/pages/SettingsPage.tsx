@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserPreferences } from '@/types';
+import { UserPreferences, CommuteMode, OutdoorActivityWindow, UnitSystem, AQIScale } from '@/types';
 import { AirQualityService } from '@/features/air-quality/service';
 import { GeminiAdvisorService } from '@/lib/gemini/advisor-service';
 import { 
@@ -59,6 +59,34 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     URL.revokeObjectURL(url);
   };
 
+  const handleCommuteChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value as CommuteMode;
+    if (['walk', 'bike', 'transit', 'car', 'remote'].includes(val)) {
+      onUpdatePreferences({ ...preferences, commute_mode: val });
+    }
+  };
+
+  const handleActivityWindowChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value as OutdoorActivityWindow;
+    if (['morning', 'midday', 'evening', 'flexible'].includes(val)) {
+      onUpdatePreferences({ ...preferences, outdoor_activity_window: val });
+    }
+  };
+
+  const handleUnitSystemChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value as UnitSystem;
+    if (val === 'metric' || val === 'imperial') {
+      onUpdatePreferences({ ...preferences, unit_system: val });
+    }
+  };
+
+  const handleScaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const val = e.target.value as AQIScale;
+    if (['US_AQI', 'EU_EAQI', 'UK_DAQI', 'UNKNOWN'].includes(val)) {
+      onUpdatePreferences({ ...preferences, aqi_scale_preference: val });
+    }
+  };
+
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Title */}
@@ -84,7 +112,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <label className="text-xs font-semibold text-slate-300 block mb-1.5">Primary Commute Mode</label>
             <select
               value={preferences.commute_mode}
-              onChange={(e) => onUpdatePreferences({ ...preferences, commute_mode: e.target.value as any })}
+              onChange={handleCommuteChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="walk">Walking</option>
@@ -99,7 +127,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <label className="text-xs font-semibold text-slate-300 block mb-1.5">Typical Outdoor Activity Window</label>
             <select
               value={preferences.outdoor_activity_window}
-              onChange={(e) => onUpdatePreferences({ ...preferences, outdoor_activity_window: e.target.value as any })}
+              onChange={handleActivityWindowChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="morning">Morning (6 AM - 10 AM)</option>
@@ -113,7 +141,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <label className="text-xs font-semibold text-slate-300 block mb-1.5">Unit System</label>
             <select
               value={preferences.unit_system}
-              onChange={(e) => onUpdatePreferences({ ...preferences, unit_system: e.target.value as any })}
+              onChange={handleUnitSystemChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="metric">Metric (Kilometers, µg/m³)</option>
@@ -125,7 +153,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
             <label className="text-xs font-semibold text-slate-300 block mb-1.5">AQI Scale Preference</label>
             <select
               value={preferences.aqi_scale_preference}
-              onChange={(e) => onUpdatePreferences({ ...preferences, aqi_scale_preference: e.target.value as any })}
+              onChange={handleScaleChange}
               className="w-full px-3 py-2 bg-navy-900 border border-slate-700 rounded-xl text-xs text-white focus:border-teal-400"
             >
               <option value="US_AQI">US EPA AQI (0–500)</option>
