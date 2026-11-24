@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { calculateTransportImpact } from '@/lib/impact/calculator';
+import React from 'react';
+import { useTransportImpact } from '@/hooks';
 import { 
   Leaf, 
   AlertTriangle, 
@@ -8,13 +8,17 @@ import {
 } from 'lucide-react';
 
 export const ImpactTrackerView: React.FC = () => {
-  type BaselineMode = 'car_gasoline' | 'car_hybrid' | 'car_ev';
-  type AlternativeMode = 'walk' | 'bike' | 'transit_bus' | 'transit_rail';
-
-  const [distance, setDistance] = useState<number>(10);
-  const [unit, setUnit] = useState<'km' | 'mi'>('km');
-  const [baselineMode, setBaselineMode] = useState<BaselineMode>('car_gasoline');
-  const [alternativeMode, setAlternativeMode] = useState<AlternativeMode>('transit_bus');
+  const {
+    distance,
+    setDistance,
+    unit,
+    setUnit,
+    baselineMode,
+    setBaselineMode,
+    alternativeMode,
+    setAlternativeMode,
+    impactResult: result,
+  } = useTransportImpact();
 
   const handleBaselineChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const val = e.target.value;
@@ -29,13 +33,6 @@ export const ImpactTrackerView: React.FC = () => {
       setAlternativeMode(val);
     }
   };
-
-  const result = calculateTransportImpact({
-    distance_value: distance,
-    distance_unit: unit,
-    baseline_mode: baselineMode,
-    alternative_mode: alternativeMode,
-  });
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto">
