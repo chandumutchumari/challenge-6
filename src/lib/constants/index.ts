@@ -1,4 +1,4 @@
-import { AQIScale, FreshnessState } from '@/types';
+import { AQIScale } from '@/types';
 
 /**
  * EPA US Air Quality Index Breakpoints
@@ -113,28 +113,7 @@ export function getCategoryForAQI(aqi: number | null, scale: AQIScale) {
  * Stale: > 180 minutes
  * Unavailable: No response or missing timestamp
  */
-export function calculateFreshness(observedAt: string | null, fetchedAt: string): { freshness: FreshnessState; reason: string } {
-  if (!observedAt) {
-    return { freshness: 'unavailable', reason: 'Missing observation timestamp from provider.' };
-  }
-
-  const observedTime = new Date(observedAt).getTime();
-  const fetchTime = new Date(fetchedAt).getTime();
-
-  if (isNaN(observedTime) || isNaN(fetchTime)) {
-    return { freshness: 'unavailable', reason: 'Invalid provider timestamp format.' };
-  }
-
-  const ageMinutes = Math.max(0, Math.floor((fetchTime - observedTime) / (60 * 1000)));
-
-  if (ageMinutes < 60) {
-    return { freshness: 'fresh', reason: `Observed ${ageMinutes}m ago (Fresh within 60m).` };
-  } else if (ageMinutes <= 180) {
-    return { freshness: 'delayed', reason: `Observed ${ageMinutes}m ago (Delayed 1-3 hrs).` };
-  } else {
-    return { freshness: 'stale', reason: `Observed ${Math.floor(ageMinutes / 60)}h ago (Exceeds 3 hr freshness threshold).` };
-  }
-}
+export { calculateFreshness } from '@/features/air-quality/freshness';
 
 /**
  * Verified Emission Factors (g CO2e per passenger-km)
